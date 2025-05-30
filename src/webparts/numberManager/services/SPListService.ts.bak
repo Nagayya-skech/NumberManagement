@@ -1,0 +1,339 @@
+import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
+import { getSP } from '../../../pnpjsConfig';
+import "@pnp/sp/presets/all";
+import "@pnp/sp/search";
+//import { SearchQueryInit,  SearchResults, SearchQueryBuilder } from "@pnp/sp/search";
+import { SearchResults, SearchQueryBuilder } from "@pnp/sp/search";
+
+export class SPListService {
+  private listName: string;
+
+  constructor(listName: string) {
+    this.listName = listName;
+  }
+
+  // Get list ID
+  public async GetListId(_sp:any | null): Promise<string> {  
+    let sp : any; 
+    if(!_sp){
+        sp = getSP();
+        //console.log("Getting SPFI from pnpjsConfig file: " + sp);
+    }
+    else {
+        sp = _sp;
+        //console.log("Transferred SPFI");
+    }
+    try{
+      // get the default document library 'Documents'
+      const list = await sp.web.lists.getByTitle(this.listName)();
+      return list.Id;
+    }
+    catch(error){
+      console.error("Error getting list ID:", error);
+      throw error;
+    }
+  }
+
+  // Create a new item
+  public async createListItem(item: any, _sp?:any): Promise<any> {
+    let sp : any; 
+    if(!_sp){
+        sp = getSP();
+        //console.log("Getting SPFI from pnpjsConfig file: " + sp);
+    }
+    else {
+        sp = _sp;
+        //console.log("Transferred SPFI");
+    }
+    try {
+      const response = await sp.web.lists.getByTitle(this.listName).items.add(item);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating item while saving the data", error);
+      return null;
+    }
+  }
+
+  // Read all items
+  public async getAllItems(_sp:any): Promise<any[]> {
+    let sp : any; 
+    if(!_sp){
+        sp = getSP();
+        //console.log("Getting SPFI from pnpjsConfig file: " + sp);
+    }
+    else {
+        sp = _sp;
+        //console.log("Transferred SPFI");
+    }
+    //const sp = spfi(_sp); //.using(Caching({ store: "session" }));
+    try {
+      const items = await sp.web.lists.getByTitle(this.listName).items.top(5000)();
+      return items;
+    } catch (error) {
+      console.error("Error getting items:", error);
+      throw error;
+    }
+  }
+
+  // Read all items with only one Column
+  public async getAllItems_singleColumn(_sp:any, columnName:string, distinctData?:boolean): Promise<any[]> {
+    let sp : any; 
+    if(!_sp){
+        sp = getSP();
+        //console.log("Getting SPFI from pnpjsConfig file: " + sp);
+    }
+    else {
+        sp = _sp;
+        //console.log("Transferred SPFI");
+    }
+    //const sp = spfi(_sp); //.using(Caching({ store: "session" }));
+    try {
+      const items = await sp.web.lists.getByTitle(this.listName).items().Select(columnName)();
+      if(distinctData){
+        let uniqueItems = items.filter((v:any,i:any,a:any)=>a.findIndex((t:any)=>(t[columnName] === v[columnName]))===i);
+        return uniqueItems;
+      }
+      return items;
+    } catch (error) {
+      console.error("Error getting items:", error);
+      throw error;
+    }
+  }
+
+  // Read a single item by ID
+  public async getItemById(id: number, _sp?:any): Promise<any> {
+    let sp : any; 
+    if(!_sp){
+        sp = getSP();
+        //console.log("Getting SPFI from pnpjsConfig file: " + sp);
+    }
+    else {
+        sp = _sp;
+        //console.log("Transferred SPFI");
+    }
+    try {
+      const item = await sp.web.lists.getByTitle(this.listName).items.getById(id)();
+      return item;
+    } catch (error) {
+      console.error("Error getting item:", error);
+      return null;
+      //throw error;
+    }
+  }
+
+  public async getItemsFilteredByColumn(columnName: string, columnValue: string, _sp?:any): Promise<any[]> {
+    let sp : any; 
+    if(!_sp){
+        sp = getSP();
+        //console.log("Getting SPFI from pnpjsConfig file: " + sp);
+    }
+    else {
+        sp = _sp;
+        //console.log("Transferred SPFI");
+    }
+    try {
+      const items = await sp.web.lists.getByTitle(this.listName).items.filter(`${columnName} eq '${columnValue}'`).top(5000)();
+      return items;
+    } catch (error) {
+      console.error("Error getting items:", error);
+      throw error;
+    }
+  } 
+
+  // Read all items with only one Column
+  public async getAllItems_singleColumn_FilteredByColumnValue(_sp:any, columnNameToFetch:string, columnNameToFilter:string, columnValueToFilter:string, distinctData?:boolean): Promise<any[]> {
+    let sp : any; 
+    if(!_sp){
+        sp = getSP();
+        //console.log("Getting SPFI from pnpjsConfig file: " + sp);
+    }
+    else {
+        sp = _sp;
+        //console.log("Transferred SPFI");
+    }
+    //const sp = spfi(_sp); //.using(Caching({ store: "session" }));
+    try {
+      const items = await sp.web.lists.getByTitle(this.listName)
+                          .items
+                          .select(columnNameToFetch)
+                          .filter(`${columnNameToFilter} eq '${columnValueToFilter}'`).top(5000)();
+      if(distinctData){
+        let uniqueItems = items.filter((v:any,i:any,a:any)=>a.findIndex((t:any)=>(t[columnNameToFetch] === v[columnNameToFetch]))===i);
+        return uniqueItems;
+      }
+      return items;
+    } catch (error) {
+      console.error("Error getting items:", error);
+      throw error;
+    }
+  }
+
+  // Update an item by ID
+  public async updateItem(id: number, item: any, _sp?:any): Promise<any> {
+    let sp : any; 
+    if(!_sp){
+        sp = getSP();
+        //console.log("Getting SPFI from pnpjsConfig file: " + sp);
+    }
+    else {
+        sp = _sp;
+        //console.log("Transferred SPFI");
+    }
+    try {
+      const response = await sp.web.lists.getByTitle(this.listName).items.getById(id).update(item);
+      return response;
+    } catch (error) {
+      console.error("Error updating item:", error);
+      throw error;
+    }
+  }
+
+  // Delete an item by ID
+  public async deleteItem(id: number, _sp?:any): Promise<void> {
+    let sp : any; 
+    if(!_sp){
+        sp = getSP();
+        //console.log("Getting SPFI from pnpjsConfig file: " + sp);
+    }
+    else {
+        sp = _sp;
+        //console.log("Transferred SPFI");
+    }
+    try {
+      await sp.web.lists.getByTitle(this.listName).items.getById(id).delete();
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      throw error;
+    }
+  }
+
+  //Search for a string in a column
+  public async getListItems_search(columnName: string, columnValue: string | null, _sp:any | null): Promise<any[]> {
+    let sp : any; 
+    let YourListName = this.listName;
+    if(!_sp){
+        sp = getSP();
+        //console.log("Getting SPFI from pnpjsConfig file: " + sp);
+    }
+    else {
+        sp = _sp;
+        //console.log("Transferred SPFI");
+    }
+    let web_details = await sp.web();
+    //console.log("Web Details:", web_details);
+    const web_url = web_details.Url;
+
+    // let web_obj = sp.web;
+    // const web_props = await web_obj.allProperties();
+    // //console.log("Web Properties:", web_props);
+    const queryUrl = `${web_url}/_api/search/query?querytext='${columnName}:${columnValue} AND Path:${web_url}/Lists/${YourListName}'&selectproperties='Title,Id,Created,Modified'&rowlimit=5000`;
+
+    const response: SPHttpClientResponse = await sp.spHttpClient.get(queryUrl, SPHttpClient.configurations.v1);
+    if (response.ok) {
+      const data = await response.json();
+      return data.PrimaryQueryResult.RelevantResults.Table.Rows.map((row: any) => {
+        const item: any = {};
+        row.Cells.forEach((cell: any) => {
+          item[cell.Key] = cell.Value;
+        });
+        return item;
+      });
+    } else {
+      throw new Error('Error fetching list items');
+    }
+  }
+
+  public async getListItems_search_v4(columnName: string, columnValue: string | null, _sp:any | null): Promise<any[]> {
+    
+    let sp : any; 
+    let allTitles:any[] = [];
+    let startRow = 0;
+    let hasMoreResults = true;
+    let listid_string = await this.GetListId(_sp);
+    //console.log("List ID:", listid_string);
+
+    if(!_sp){
+      sp = getSP();
+      //console.log("Getting SPFI from pnpjsConfig file: " + sp);
+    }
+    else {
+        sp = _sp;
+        //console.log("Transferred SPFI");
+    }
+
+    while (hasMoreResults) {
+        const query = SearchQueryBuilder()
+            .text(columnName + ":" + columnValue +"*") // This searches for titles starting with 'YourValue'
+            //.text(columnValue +"*") // This searches for titles starting with 'YourValue'
+            .selectProperties(columnName)
+            .rowLimit(5000) // Fetch 500 items per request
+            .startRow(startRow)
+            .sourceId(listid_string) // Replace with the actual source ID of the "Numbers" list    
+            //.sortList(columnName, false)
+
+        try {
+            const results: SearchResults = await sp.search(query);
+            //const results: SearchResults = await sp.search(q2);
+            //console.log("Results_q:");
+            //console.log(results);
+            const titles = results.PrimarySearchResults.filter(x => ((x.Path) && x.Path.indexOf("Lists/"+this.listName)>-1)).map(item => item.Title);
+            allTitles = allTitles.concat(titles);
+
+            // Check if there are more results
+            hasMoreResults = results.TotalRows > startRow + results.RowCount;
+            startRow += results.RowCount;
+        } catch (error) {
+            console.error("Error:", error);
+            hasMoreResults = false;
+        }
+    }
+
+    //console.log("AllTitles:-");
+    //console.log(allTitles);
+    return allTitles;
+  }
+
+   // Read all items by handling threshold Limit
+   public async getAllItemsWOThreshold(_sp: any, filterQuery?: string, selectFields?: string[], expandFields?: string[], orderByField?: string, ascending?: boolean): Promise<any[]> {
+    let sp : any; 
+    if(!_sp){
+        sp = getSP();
+        //console.log("Getting SPFI from pnpjsConfig file: " + sp);
+    }
+    else {
+        sp = _sp;
+        //console.log("Transferred SPFI");
+    }
+    const batchSize = 3000;
+    let items: any[] = [];
+    let skip = 0;
+    let hasMoreItems = true;
+    try {
+      while (hasMoreItems) {
+          // const batchItems = await sp.web.lists.getByTitle(this.listName).items.top(batchSize).skip(skip)();
+          let query = sp.web.lists.getByTitle(this.listName).items.top(batchSize).skip(skip);
+            if (filterQuery) {
+              query = query.filter(filterQuery);
+            }
+            if (selectFields && selectFields.length > 0) {
+              query = query.select(...selectFields);
+            }
+            if (expandFields && expandFields.length > 0) {
+              query = query.expand(...expandFields);
+            }
+            // if (orderByField) {
+            //   query = query.orderBy(orderByField, ascending === false ? false : true);
+            // }
+
+          const batchItems = await query();
+          items = items.concat(batchItems);
+          skip += batchSize;
+          hasMoreItems = batchItems.length === batchSize;
+      }
+      return items;
+  } catch (error) {
+      console.error("Error getting items:", error);
+      throw error;
+  }
+  }
+}

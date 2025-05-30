@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "number-mgmt-client-side-solution",
+    "id": "8a9acf4b-846a-44c7-b758-90adcab5ea46",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.19.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "number-mgmt description"
+      },
+      "longDescription": {
+        "default": "number-mgmt description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "number-mgmt Feature",
+        "description": "The feature that activates elements of the number-mgmt solution.",
+        "id": "ad7041f1-40ba-4833-b71c-afecf3d50178",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/number-mgmt.sppkg"
+  }
+}

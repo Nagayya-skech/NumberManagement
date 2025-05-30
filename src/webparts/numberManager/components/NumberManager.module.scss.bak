@@ -1,0 +1,275 @@
+@import '~@fluentui/react/dist/sass/References.scss';
+
+.numberManager {
+  overflow: hidden;
+  padding: 1em;
+  color: "[theme:bodyText, default: #323130]";
+  color: var(--bodyText);
+  &.teams {
+    font-family: $ms-font-family-fallbacks;
+  }
+}
+
+:global {
+  #workbenchPageContent,
+  .CanvasComponent.LCS .CanvasZone {
+    max-width: 100% !important;
+  }
+}
+
+.welcome {
+  text-align: center;
+}
+
+.welcomeImage {
+  width: 100%;
+  max-width: 420px;
+}
+
+.links {
+  a {
+    text-decoration: none;
+    color: "[theme:link, default:#03787c]";
+    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+
+    &:hover {
+      text-decoration: underline;
+      color: "[theme:linkHovered, default: #014446]";
+      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
+    }
+  }
+}
+
+.topNavigation {
+  background-color: "[theme:secondaryBackground, default: #f3f2f1]";
+  color: "[theme:bodyText, default:rgb(245,245,220)]";
+  border: 1px solid "[theme::bodyText, default:#eaeaea]";
+  
+  ul {
+    li {
+      &:hover {
+        background-color: "[theme:secondaryBackgroundHover, default:#e5e5e5]";
+        color: "[theme::bodyText, default:rgb(245,245,220)]";
+        border-color: "[theme:neutralQuaternaryAlt, default:#c8c8c8]";
+      }
+      
+      &:active {
+        background-color: "[theme:secondaryBackgroundPressed, default:#d0d0d0]";
+        color: "[theme::bodyText, default:rgb(245,245,220)]";
+        border-color: "[theme:neutralTertiaryAlt, default:#a6a6a6]";
+      }
+
+      &.selected {
+        background-color: "[theme:secondaryBackgroundSelected, default:#c8c8c8]";
+        color: "[theme::bodyText, default:rgb(245,245,220)]";
+        border-color: "[theme:neutralSecondaryAlt, default:#a6a6a6]";
+      }
+    }
+  }
+}
+
+.dropdownStyles {
+  width: 300px;
+}
+
+.totalCountContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0078d4; /* Example color, adjust as needed */
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin: 5px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.totalCount {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #0078d4; /* Example color, adjust as needed */
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-align: center;
+  margin: 5px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.resetButton {
+    font-size: 16px;
+    font-weight: bold;
+    color: #0078d4;
+    background-color: #ffffff;
+    border: 2px solid #0078d4;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.resetButton:hover {
+    background-color: #0078d4;
+    color: #ffffff;
+}
+
+.detailsListContainer {
+  height: 400px;
+  overflow: auto;
+  position: relative;
+}
+
+.modalContainer {
+  min-width: 40%;
+  max-width: 80%;
+  min-height: 40%;
+  max-height: 80%;
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  background-color: #0078d4;
+  color: white;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+
+.viewHeader {
+  background-color: teal;
+}
+
+.editHeader {
+  background-color: #0078d4;
+}
+
+.modalCloseButton {
+  color: white;
+}
+
+.modalBody {
+  padding: 10px;
+  overflow-y: auto;
+  flex-grow: 1;
+  background-color: #fff;
+}
+
+.modalRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modalLabel {
+  flex: 1;
+  font-weight: bold;
+  color: #333;
+}
+
+.modalValue {
+  flex: 2;
+  padding: 10px;
+  color: #555;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.textField {
+  width: 60%;
+}
+
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  // background-color: #0078d4;
+  color: white;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.saveButton {
+  background-color: #0078d4; 
+  color: white; /* White text */
+  border: none; /* Remove border */
+  padding: 10px 20px; /* Add some padding */
+  font-size: 1em; /* Increase font size */
+  font-weight: bold; /* Bold text */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.saveButton:hover {
+  background-color: #005a9e; /* Lighter shade on hover */
+}
+
+
+// Table CSS
+
+.headerRow {
+  display: flex;
+  width: max-content; /* Ensure it fits the content to allow horizontal scrolling */
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  font-size: 1vw;
+}
+
+.columnHeader {
+  padding: 10px 5px;
+  border: 0.1px solid white;
+  // color: white;
+  background-color: #ffffff;
+  // overflow:hidden ;
+  height: 60px;
+  width: 13vw;
+  font-weight: bold;
+  white-space: nowrap;
+  text-align: center;
+  font-size: 1vw;
+  //width: 100%; /* Set flex-basis and flex-grow to ensure consistent width */
+}
+
+.dataRow {
+  padding: 5px 5px;
+  display: flex;
+  width: max-content; /* Ensure it fits the content to allow horizontal scrolling */
+  //border-bottom: 0.1px solid lightgray;
+  text-align: center;
+  font-size: 1vw;
+}
+
+.cell {
+  padding: 5px 5px;
+  width: 13vw;
+ // border: 0.1px solid lightgray;
+  overflow: hidden;
+  // height: 100px;
+  font-size: 1vw;
+  text-align: center;
+  // width: 100%; /* Set flex-basis and flex-grow to ensure consistent width */
+}
+
+.manual-option {
+  border-bottom: 1px solid #ccc; /* Adjust the color and thickness as needed */
+}
+
+
+.homePage {
+  .rightAlignedDiv {
+    float:right  
+  }
+}
+

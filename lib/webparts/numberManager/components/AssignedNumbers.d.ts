@@ -1,0 +1,60 @@
+import React from 'react';
+import { INumberManagerProps } from './INumberManagerProps';
+import { IComboBoxOption } from '@fluentui/react';
+interface AssignedNumbersState {
+    count: number;
+    currentNumberRange_Row: any;
+    currentHeadNumber: any;
+    AssignedNumbers: any[];
+    AssignedNumbersFilter: any[];
+    optionsNumber: any[];
+    optionsName: any[];
+    optionsLicenseType: any[];
+    optionsUsage: any[];
+    optionsBillability: any[];
+    currentNumberRange_id: number;
+    isModalOpen: boolean;
+    selectedItem: any;
+    selectedNumberOptions: any[];
+    selectedNameOptions: any[];
+    selectedLicenseTypeOptions: any[];
+    selectedUsageOptions: any[];
+    selectedBillabilityOptions: any[];
+    modalType: string;
+    showDialog: boolean;
+    itemToDelete: any;
+    dialogTitle: string;
+    dialogSubText: string;
+    dialogType: 'confirmation' | 'information';
+    isUserOwner: boolean;
+    LicenseTypeDropdownOptions: any[];
+    UsageDropdownOptions: any[];
+}
+declare class AssignedNumbersPage extends React.Component<INumberManagerProps, AssignedNumbersState> {
+    private spListService_NumberRanges;
+    private spListService_AssignedNumbers;
+    private spUserService_CheckUserIsOwner;
+    private spListService_UsageLicensedNumbers;
+    filteredData: any[];
+    constructor(props: INumberManagerProps);
+    componentDidMount(): Promise<void>;
+    getNumberRangeDetails(id: string | null): Promise<any>;
+    getAssignedNumbers(headnumber: string | null): Promise<any[]>;
+    getUsageLicenses(): Promise<void>;
+    getOptions(): Promise<void>;
+    handleCloseModal: () => void;
+    handleView: (item: any) => void;
+    handleEdit: (item: any) => void;
+    handleDelete: (item: any) => Promise<void>;
+    handleConfirmDelete: () => Promise<void>;
+    showDeleteDialog: (message: string) => void;
+    showUpdateDialog: (message: string) => void;
+    handleSave: () => Promise<void>;
+    handleChange: (key: string, value: string | undefined) => void;
+    handleOptionsFilter: (event: React.FormEvent<any>, option?: IComboBoxOption, index?: number, label?: string) => void;
+    filterData: () => void;
+    clearSelections: () => void;
+    render(): JSX.Element;
+}
+export default AssignedNumbersPage;
+//# sourceMappingURL=AssignedNumbers.d.ts.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"UserDetails.d.ts","sourceRoot":"","sources":["../../../../src/webparts/numberManager/models/UserDetails.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,WAAW;IACxB,EAAE,EAAE,MAAM,CAAC;IACX,KAAK,EAAC,MAAM,CAAC;IACb,EAAE,EAAE,MAAM,CAAC;IACX,OAAO,EAAE,MAAM,CAAC;IAChB,OAAO,EAAE,OAAO,GAAG,KAAK,CAAC;CAC5B"}

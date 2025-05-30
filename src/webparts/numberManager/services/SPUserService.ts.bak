@@ -1,0 +1,50 @@
+import { getSP } from '../../../pnpjsConfig';
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
+
+export class SPUserService {
+    
+    private _spCurrentUser: any;
+
+    private _getCurrentUser = async (_sp: any): Promise<any> => {
+        if(!_sp){
+            _sp = getSP();
+        }
+        try {
+            const user = await _sp.web.currentUser();
+            this._spCurrentUser = user;
+            return user
+        } catch (error) {
+            console.error("Error getting current user:", error);
+            throw error;
+        }
+    }
+
+    public GetCurrentUserDetails = async (_sp?: any): Promise<any> => {
+        if(!this._spCurrentUser){
+            await this._getCurrentUser(_sp);
+        }
+        return this._spCurrentUser;
+    }
+
+    public GetCurrentUsers_OU = (userTitle: any): string => {
+        const ouRegex = /\(([^)]+)\)$/;
+        const ouMatch = ouRegex.exec(userTitle);
+        const ou = ouMatch ? ouMatch[1] : '';
+        return ou;
+    }
+
+    public CheckUserIsAdmin = async (_sp?: any): Promise<boolean> => {  
+        if(!this._spCurrentUser){
+            await this._getCurrentUser(_sp);
+        }
+        const user = this._spCurrentUser;
+        const isAdmin = user.IsSiteAdmin;
+        return isAdmin;
+    }
+
+    public GetCurrentUsers_Country(user_ou: string): string {
+        return user_ou.split('-')[0];
+    }
+
+}
